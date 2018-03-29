@@ -49,7 +49,7 @@ nav:nth-child(1) {
 
 .domoForm {
     border: 2px solid #338acc;
-    height: 35px;
+    height: auto;
     width: 700px;
     margin-top:0px;
     padding-top:10px;
@@ -185,7 +185,7 @@ nav:nth-child(1) {
     height: 450px;
     width: 300px;
     -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
+    -webkit-transform: rotate(330deg);
     transform: rotate(330deg);
 }
 
