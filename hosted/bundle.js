@@ -1,5 +1,6 @@
 "use strict";
 
+var globCsrf = void 0;
 var handleDomo = function handleDomo(e) {
     e.preventDefault();
 
@@ -50,6 +51,15 @@ var DomoForm = function DomoForm(props) {
     );
 };
 
+var deleteDomo = function deleteDomo(e) {
+    e.preventDefault();
+    //csrf
+    sendAjax('DELETE', '/deleteDomo', 'id=' + e.target.id + "&_csrf=" + globCsrf, function () {
+        loadDomosFromServer();
+    });
+    return false;
+};
+
 var DomoList = function DomoList(props) {
     if (props.domos.length === 0) {
         return React.createElement(
@@ -87,6 +97,11 @@ var DomoList = function DomoList(props) {
                 { className: "domoLevel" },
                 " Level: ",
                 domo.level
+            ),
+            React.createElement(
+                "button",
+                { className: "domoDelete", onClick: deleteDomo, id: domo._id },
+                "X"
             )
         );
     });
@@ -104,7 +119,8 @@ var loadDomosFromServer = function loadDomosFromServer() {
 };
 
 var setup = function setup(csrf) {
-    ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
+    globCsrf = csrf;
+    ReactDOM.render(React.createElement(DomoForm, { csrf: globCsrf }), document.querySelector("#makeDomo"));
 
     ReactDOM.render(React.createElement(DomoList, { domos: [] }), document.querySelector("#domos"));
 

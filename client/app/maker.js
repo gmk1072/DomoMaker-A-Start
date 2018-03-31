@@ -1,3 +1,5 @@
+
+let globCsrf;
 const handleDomo = (e) => {
     e.preventDefault();
 
@@ -34,6 +36,15 @@ const DomoForm = (props) => {
     );
 };
 
+const deleteDomo = (e) => {
+    e.preventDefault();
+    //csrf
+    sendAjax('DELETE', '/deleteDomo', 'id=' + e.target.id + "&_csrf=" + globCsrf, function() {
+        loadDomosFromServer();
+    });
+    return false;
+};
+
 const DomoList = function(props) {
     if(props.domos.length === 0) {
         return (
@@ -50,6 +61,7 @@ const DomoList = function(props) {
             <h3 className="domoName"> Name: {domo.name} </h3>
             <h3 className="domoAge"> Age: {domo.age} </h3>
             <h3 className="domoLevel"> Level: {domo.level}</h3>
+            <button className="domoDelete" onClick={deleteDomo} id={domo._id} >X</button>
             </div>
         );
     });
@@ -69,8 +81,9 @@ const loadDomosFromServer = () => {
 };
 
 const setup = function(csrf) {
+    globCsrf= csrf;
     ReactDOM.render(
-        <DomoForm csrf={csrf} />, document.querySelector("#makeDomo")
+        <DomoForm csrf={globCsrf} />, document.querySelector("#makeDomo")
     );
 
     ReactDOM.render(
