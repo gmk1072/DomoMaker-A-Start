@@ -1,81 +1,144 @@
 
 let globCsrf;
-const handleDomo = (e) => {
+let updateTarget;
+const handleBookmark = (e) => {
     e.preventDefault();
 
-    $("#domoMessage").animate({width:'hide'}, 350);
-    if($("#domoName").val() == '' || $("#domoAge").val() == '') {
+    $("#bookmarkMessage").animate({width:'hide'}, 350);
+    if($("#bookmarkName").val() == '' || $("#bookmarkURL").val() == '') {
         handleError("RAWR all fields are required");
         return false;
     }
 
-    sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function() {
-        loadDomosFromServer();
+    sendAjax('POST', $("#bookmarkForm").attr("action"), $("#bookmarkForm").serialize(), function() {
+        loadBookmarksFromServer();
     });
     return false;
 };
-
-const DomoForm = (props) => {
+const grabTarget = (e) => {
+    e.preventDefault();
+    updateTarget = e.target.parentElement.id;
+    document.querySelector("#updateName").value="";
+    document.querySelector("#updateUrl").value="";
+};
+//        <label htmlFor="name" >Name: </label>
+//<label htmlFor="level">Level: </label>
+//<input id="bookmarkLevel" type="text" name="level" placeholder="Bookmark Level"/>
+const BookmarkForm = (props) => {
     return (
-        <form id="domoForm"
-        onSubmit={handleDomo}
-        name="domoForm"
+        <form id="bookmarkForm"
+        onSubmit={handleBookmark}
+        name="bookmarkForm"
         action="/maker"
         method="POST"
-        className="domoForm"
+        className="bookmarkForm form-inline"
         >
-        <label htmlFor="name">Name: </label>
-        <input id="domoName" type="text" name="name" placeholder="Domo Name"/>
-        <label htmlFor="age">Age: </label>
-        <input id="domoAge" type="text" name="age" placeholder="Domo Age"/><br/><br/>
-        <label htmlFor="level">Level: </label>
-        <input id="domoLevel" type="text" name="level" placeholder="Domo Level"/>
+        <div className="input-group">
+        <div className="input-group-prepend">
+        <span className="input-group-text bg-secondary text-light" id="bookmark-name-addon">Name</span>
+        </div>
+        <input className="form-control" id="bookmarkName" type="text" name="name" placeholder="Bookmark Name" aria-describedby="bookmark-name-addon"/>
+        </div>
+
+        <div className="input-group ml-sm-2">
+        <div className="input-group-prepend">
+        <span className="input-group-text bg-secondary text-light" id="bookmark-url-addon">URL</span>
+        </div>
+        <input className="form-control" id="bookmarkURL" type="text" name="url" placeholder="Bookmark URL" aria-describedby="bookmark-url-addon"/>
+        </div>
         <input type="hidden" name="_csrf" value={props.csrf} />
-        <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+        <button className="btn btn-success ml-sm-2" type="submit" value="Make Bookmark"><icon className="material-icons">add</icon></button>
         </form>
     );
 };
 
-const deleteDomo = (e) => {
+const deleteBookmark = (e) => {
     e.preventDefault();
     //csrf
-    sendAjax('DELETE', '/deleteDomo', 'id=' + e.target.id + "&_csrf=" + globCsrf, function() {
-        loadDomosFromServer();
+    sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function() {
+        loadBookmarksFromServer();
+    });
+    return false;
+};
+const updateBookmark = (e) => {
+    e.preventDefault();
+    const name = document.querySelector("#updateName").value;
+    const url = document.querySelector("#updateUrl").value;
+    sendAjax('POST', '/updateBookmark', 'id=' + updateTarget +"&name=" +name + "&url=" + url + "&_csrf=" + globCsrf, function() {
+        loadBookmarksFromServer();
     });
     return false;
 };
 
-const DomoList = function(props) {
-    if(props.domos.length === 0) {
-        return (
-            <div className="domoList">
-            <h3 className="emptyDomo">No domos yet</h3>
-            </div>
-        );
-    }
+const UpdateModal = (props) => {
 
-    const domoNodes = props.domos.map(function(domo) {
-        return (
-            <div key={domo._id} className="domo">
-            <img src="/assets/img/domoface.jpeg" atl="domo face" className="domoFace" />
-            <h3 className="domoName"> Name: {domo.name} </h3>
-            <h3 className="domoAge"> Age: {domo.age} </h3>
-            <h3 className="domoLevel"> Level: {domo.level}</h3>
-            <button className="domoDelete" onClick={deleteDomo} id={domo._id} >X</button>
-            </div>
-        );
-    });
-    return(
-        <div className="domoList">
-        {domoNodes}
+    return (
+        <div className="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <div className="modal-header">
+        <h5 className="modal-title" id="updateModalLabel">Update Bookmark</h5>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div className="modal-body">
+        <form id="updateForm" name="updateForm" action="/updateBookmark" method="POST" onSubmit={updateBookmark}>
+        <div className="form-group">
+        <label htmlFor="updateName" className="col-form-label">Name:</label>
+        <input type="text" className="form-control" id="updateName" />
+        </div>
+        <div className="form-group">
+        <label htmlFor="updateUrl" className="col-form-label">URL:</label>
+        <input type="text" className="form-control" id="updateUrl" />
+        </div>
+        <button type="submit" value="updateSubmit" className="btn btn-primary">Confirm Update</button>
+        </form>
+        </div>
+        </div>
+        </div>
         </div>
     );
 };
 
-const loadDomosFromServer = () => {
-    sendAjax('GET', '/getDomos', null, (data) => {
+
+const BookmarkList = function(props) {
+    if(props.bookmarks.length === 0) {
+        return (
+            <div className="bookmarkList list-group">
+            <a href="#" className="emptyBookmark list-group-item list-group-item-action">No bookmarks yet</a>
+            </div>
+        );
+    }
+
+    //<img src="/assets/img/bookmarkface.jpeg" atl="bookmark face" className="bookmarkFace" />
+    const bookmarkNodes = props.bookmarks.map(function(bookmark) {
+        return (
+            <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark container-fluid list-group-item list-group-item-action">
+            <div className ="row" id={bookmark._id}>
+            <h3 className="bookmarkName col-10"><img src={'http://www.google.com/s2/favicons?domain='+bookmark.url} /> {bookmark.name} </h3>
+            <button type="button" data-toggle="modal" data-target="#updateModal" data-whatever="@mdo" className="bookmarkUpdate col-1 btn-sm btn-primary text-light" onClick={grabTarget}><icon className="material-icons">edit</icon></button>
+
+            <button className="bookmarkDelete col-1 btn-sm btn-danger text-dark" onClick={deleteBookmark} ><icon className="material-icons">delete</icon></button>
+            </div>
+            <div className="row">
+            <div className="col-1"></div>
+            <h3 className="bookmarkURL col-10">{bookmark.url} </h3>
+            </div>
+            </a>
+        );
+    });
+    return(
+        <div className="bookmarkList">
+        {bookmarkNodes}
+        </div>
+    );
+};
+
+const loadBookmarksFromServer = () => {
+    sendAjax('GET', '/getBookmarks', null, (data) => {
         ReactDOM.render(
-            <DomoList domos={data.domos} />, document.querySelector("#domos")
+            <BookmarkList bookmarks={data.bookmarks} />, document.querySelector("#bookmarks")
         );
     });
 };
@@ -83,14 +146,17 @@ const loadDomosFromServer = () => {
 const setup = function(csrf) {
     globCsrf= csrf;
     ReactDOM.render(
-        <DomoForm csrf={globCsrf} />, document.querySelector("#makeDomo")
+        <BookmarkForm csrf={globCsrf} />, document.querySelector("#makeBookmark")
     );
 
     ReactDOM.render(
-        <DomoList domos={[]} />, document.querySelector("#domos")
+        <BookmarkList bookmarks={[]} />, document.querySelector("#bookmarks")
+    );
+    ReactDOM.render(
+        <UpdateModal bookmarks={[]} />, document.querySelector("#updateLocation")
     );
 
-    loadDomosFromServer();
+    loadBookmarksFromServer();
 };
 
 

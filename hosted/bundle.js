@@ -1,130 +1,248 @@
 "use strict";
 
 var globCsrf = void 0;
-var handleDomo = function handleDomo(e) {
+var updateTarget = void 0;
+var handleBookmark = function handleBookmark(e) {
     e.preventDefault();
 
-    $("#domoMessage").animate({ width: 'hide' }, 350);
-    if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
+    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    if ($("#bookmarkName").val() == '' || $("#bookmarkURL").val() == '') {
         handleError("RAWR all fields are required");
         return false;
     }
 
-    sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function () {
-        loadDomosFromServer();
+    sendAjax('POST', $("#bookmarkForm").attr("action"), $("#bookmarkForm").serialize(), function () {
+        loadBookmarksFromServer();
     });
     return false;
 };
-
-var DomoForm = function DomoForm(props) {
+var grabTarget = function grabTarget(e) {
+    e.preventDefault();
+    updateTarget = e.target.parentElement.id;
+    document.querySelector("#updateName").value = "";
+    document.querySelector("#updateUrl").value = "";
+};
+//        <label htmlFor="name" >Name: </label>
+//<label htmlFor="level">Level: </label>
+//<input id="bookmarkLevel" type="text" name="level" placeholder="Bookmark Level"/>
+var BookmarkForm = function BookmarkForm(props) {
     return React.createElement(
         "form",
-        { id: "domoForm",
-            onSubmit: handleDomo,
-            name: "domoForm",
+        { id: "bookmarkForm",
+            onSubmit: handleBookmark,
+            name: "bookmarkForm",
             action: "/maker",
             method: "POST",
-            className: "domoForm"
+            className: "bookmarkForm form-inline"
         },
         React.createElement(
-            "label",
-            { htmlFor: "name" },
-            "Name: "
+            "div",
+            { className: "input-group" },
+            React.createElement(
+                "div",
+                { className: "input-group-prepend" },
+                React.createElement(
+                    "span",
+                    { className: "input-group-text bg-secondary text-light", id: "bookmark-name-addon" },
+                    "Name"
+                )
+            ),
+            React.createElement("input", { className: "form-control", id: "bookmarkName", type: "text", name: "name", placeholder: "Bookmark Name", "aria-describedby": "bookmark-name-addon" })
         ),
-        React.createElement("input", { id: "domoName", type: "text", name: "name", placeholder: "Domo Name" }),
         React.createElement(
-            "label",
-            { htmlFor: "age" },
-            "Age: "
+            "div",
+            { className: "input-group ml-sm-2" },
+            React.createElement(
+                "div",
+                { className: "input-group-prepend" },
+                React.createElement(
+                    "span",
+                    { className: "input-group-text bg-secondary text-light", id: "bookmark-url-addon" },
+                    "URL"
+                )
+            ),
+            React.createElement("input", { className: "form-control", id: "bookmarkURL", type: "text", name: "url", placeholder: "Bookmark URL", "aria-describedby": "bookmark-url-addon" })
         ),
-        React.createElement("input", { id: "domoAge", type: "text", name: "age", placeholder: "Domo Age" }),
-        React.createElement("br", null),
-        React.createElement("br", null),
-        React.createElement(
-            "label",
-            { htmlFor: "level" },
-            "Level: "
-        ),
-        React.createElement("input", { id: "domoLevel", type: "text", name: "level", placeholder: "Domo Level" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "makeDomoSubmit", type: "submit", value: "Make Domo" })
+        React.createElement(
+            "button",
+            { className: "btn btn-success ml-sm-2", type: "submit", value: "Make Bookmark" },
+            React.createElement(
+                "icon",
+                { className: "material-icons" },
+                "add"
+            )
+        )
     );
 };
 
-var deleteDomo = function deleteDomo(e) {
+var deleteBookmark = function deleteBookmark(e) {
     e.preventDefault();
     //csrf
-    sendAjax('DELETE', '/deleteDomo', 'id=' + e.target.id + "&_csrf=" + globCsrf, function () {
-        loadDomosFromServer();
+    sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function () {
+        loadBookmarksFromServer();
+    });
+    return false;
+};
+var updateBookmark = function updateBookmark(e) {
+    e.preventDefault();
+    var name = document.querySelector("#updateName").value;
+    var url = document.querySelector("#updateUrl").value;
+    sendAjax('POST', '/updateBookmark', 'id=' + updateTarget + "&name=" + name + "&url=" + url + "&_csrf=" + globCsrf, function () {
+        loadBookmarksFromServer();
     });
     return false;
 };
 
-var DomoList = function DomoList(props) {
-    if (props.domos.length === 0) {
+var UpdateModal = function UpdateModal(props) {
+
+    return React.createElement(
+        "div",
+        { className: "modal fade", id: "updateModal", tabindex: "-1", role: "dialog", "aria-labelledby": "updateModalModalLabel", "aria-hidden": "true" },
+        React.createElement(
+            "div",
+            { className: "modal-dialog", role: "document" },
+            React.createElement(
+                "div",
+                { className: "modal-content" },
+                React.createElement(
+                    "div",
+                    { className: "modal-header" },
+                    React.createElement(
+                        "h5",
+                        { className: "modal-title", id: "updateModalLabel" },
+                        "Update Bookmark"
+                    ),
+                    React.createElement(
+                        "button",
+                        { type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close" },
+                        React.createElement(
+                            "span",
+                            { "aria-hidden": "true" },
+                            "\xD7"
+                        )
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "modal-body" },
+                    React.createElement(
+                        "form",
+                        { id: "updateForm", name: "updateForm", action: "/updateBookmark", method: "POST", onSubmit: updateBookmark },
+                        React.createElement(
+                            "div",
+                            { className: "form-group" },
+                            React.createElement(
+                                "label",
+                                { htmlFor: "updateName", className: "col-form-label" },
+                                "Name:"
+                            ),
+                            React.createElement("input", { type: "text", className: "form-control", id: "updateName" })
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "form-group" },
+                            React.createElement(
+                                "label",
+                                { htmlFor: "updateUrl", className: "col-form-label" },
+                                "URL:"
+                            ),
+                            React.createElement("input", { type: "text", className: "form-control", id: "updateUrl" })
+                        ),
+                        React.createElement(
+                            "button",
+                            { type: "submit", value: "updateSubmit", className: "btn btn-primary" },
+                            "Confirm Update"
+                        )
+                    )
+                )
+            )
+        )
+    );
+};
+
+var BookmarkList = function BookmarkList(props) {
+    if (props.bookmarks.length === 0) {
         return React.createElement(
             "div",
-            { className: "domoList" },
+            { className: "bookmarkList list-group" },
             React.createElement(
-                "h3",
-                { className: "emptyDomo" },
-                "No domos yet"
+                "a",
+                { href: "#", className: "emptyBookmark list-group-item list-group-item-action" },
+                "No bookmarks yet"
             )
         );
     }
 
-    var domoNodes = props.domos.map(function (domo) {
+    //<img src="/assets/img/bookmarkface.jpeg" atl="bookmark face" className="bookmarkFace" />
+    var bookmarkNodes = props.bookmarks.map(function (bookmark) {
         return React.createElement(
-            "div",
-            { key: domo._id, className: "domo" },
-            React.createElement("img", { src: "/assets/img/domoface.jpeg", atl: "domo face", className: "domoFace" }),
+            "a",
+            { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark container-fluid list-group-item list-group-item-action" },
             React.createElement(
-                "h3",
-                { className: "domoName" },
-                " Name: ",
-                domo.name,
-                " "
+                "div",
+                { className: "row", id: bookmark._id },
+                React.createElement(
+                    "h3",
+                    { className: "bookmarkName col-10" },
+                    React.createElement("img", { src: 'http://www.google.com/s2/favicons?domain=' + bookmark.url }),
+                    " ",
+                    bookmark.name,
+                    " "
+                ),
+                React.createElement(
+                    "button",
+                    { type: "button", "data-toggle": "modal", "data-target": "#updateModal", "data-whatever": "@mdo", className: "bookmarkUpdate col-1 btn-sm btn-primary text-light", onClick: grabTarget },
+                    React.createElement(
+                        "icon",
+                        { className: "material-icons" },
+                        "edit"
+                    )
+                ),
+                React.createElement(
+                    "button",
+                    { className: "bookmarkDelete col-1 btn-sm btn-danger text-dark", onClick: deleteBookmark },
+                    React.createElement(
+                        "icon",
+                        { className: "material-icons" },
+                        "delete"
+                    )
+                )
             ),
             React.createElement(
-                "h3",
-                { className: "domoAge" },
-                " Age: ",
-                domo.age,
-                " "
-            ),
-            React.createElement(
-                "h3",
-                { className: "domoLevel" },
-                " Level: ",
-                domo.level
-            ),
-            React.createElement(
-                "button",
-                { className: "domoDelete", onClick: deleteDomo, id: domo._id },
-                "X"
+                "div",
+                { className: "row" },
+                React.createElement("div", { className: "col-1" }),
+                React.createElement(
+                    "h3",
+                    { className: "bookmarkURL col-10" },
+                    bookmark.url,
+                    " "
+                )
             )
         );
     });
     return React.createElement(
         "div",
-        { className: "domoList" },
-        domoNodes
+        { className: "bookmarkList" },
+        bookmarkNodes
     );
 };
 
-var loadDomosFromServer = function loadDomosFromServer() {
-    sendAjax('GET', '/getDomos', null, function (data) {
-        ReactDOM.render(React.createElement(DomoList, { domos: data.domos }), document.querySelector("#domos"));
+var loadBookmarksFromServer = function loadBookmarksFromServer() {
+    sendAjax('GET', '/getBookmarks', null, function (data) {
+        ReactDOM.render(React.createElement(BookmarkList, { bookmarks: data.bookmarks }), document.querySelector("#bookmarks"));
     });
 };
 
 var setup = function setup(csrf) {
     globCsrf = csrf;
-    ReactDOM.render(React.createElement(DomoForm, { csrf: globCsrf }), document.querySelector("#makeDomo"));
+    ReactDOM.render(React.createElement(BookmarkForm, { csrf: globCsrf }), document.querySelector("#makeBookmark"));
 
-    ReactDOM.render(React.createElement(DomoList, { domos: [] }), document.querySelector("#domos"));
+    ReactDOM.render(React.createElement(BookmarkList, { bookmarks: [] }), document.querySelector("#bookmarks"));
+    ReactDOM.render(React.createElement(UpdateModal, { bookmarks: [] }), document.querySelector("#updateLocation"));
 
-    loadDomosFromServer();
+    loadBookmarksFromServer();
 };
 
 var getToken = function getToken() {
@@ -140,11 +258,11 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
     $("#errorMessage").text(message);
-    $("#domoMessage").animate({ width: 'toggle' }, 350);
+    $("#bookmarkMessage").animate({ width: 'toggle' }, 350);
 };
 
 var redirect = function redirect(response) {
-    $("#domoMessage").animate({ width: 'hide' }, 350);
+    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
     window.location = response.redirect;
 };
 
