@@ -18,31 +18,29 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+
         <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
     </head>
     <body>
-        <div class="container-fluid fixed-top ">
-            <div class="row w-100">
-                <nav class="navbar bg-danger">
-                    <div class="container-fluid">
-                        <div class="row justify-content-between w-100">
-                            <div>
-                                <a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
-                            </div>
-                            <div>
-                                <a id="upgradeButton" href="/pricing"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Upgrade</div></a>
-                                <a href="/logout"><div class="btn btn-secondary text-light align-middle ml-sm-2 ">Log out</div></a>
-                                <a href="/account"><div class="btn btn-secondary text-light align-middle ml-sm-2 ">Account</div></a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+        <div class="container-fluid fixed-top">
             <div class="row">
                 <div class="col-12">
-                    <nav class="navbar bg-danger" id="makeBookmark">
+                    <nav class="navbar bg-danger">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between w-100">
+                                <div>
+                                    <a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
+
+                                    <a id="backToAppButton" href="/maker"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back</div></a>
+                                </div>
+                                <div>
+                                    <a id="upgradeButton" href="/pricing"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Upgrade</div></a>
+                                    <a href="/logout"><div class="btn btn-secondary text-light align-middle ml-sm-2 ">Log out</div></a>
+                                </div>
+                            </div>
+                        </div>
                     </nav>
                 </div>
             </div>
@@ -53,28 +51,22 @@
                     <nav class="navbar bg-danger">
                         <div class="container-fluid">
                             <div class="row">
-                                <a class="navbar-brand" href="/login"><img src="/assets/img/face.png" alt="face logo"/></a>
-                                <a href="/logout"><div class="btn btn-secondary text-light align-middle">Log out</div></a>
-                                <a href="/account"><div class="btn btn-secondary text-light align-middle">Account</div></a>
+                                <a href="/login"><img src="/assets/img/face.png" alt="face logo"/></a>
+
+                                <a href="/maker"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back</div></a>
                             </div>
                         </div>
-                    </nav>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <nav class="navbar bg-danger">
                     </nav>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
             <div class="row">
-                <section id="bookmarks" class="col-11">
-                </section>
-                <div id="ads" class="col-1 m-0 p-0">
+                <div class="col-3 bg-danger" id="accountSideBar">
 
                 </div>
+                <section class="col-9" id="accountContent" >
+                </section>
 
                 <div class="modal fade" id="bookmarkMessage" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -88,18 +80,8 @@
                         </div>
                     </div>
                 </div>
-
-                <!--<div id="bookmarkMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-<h4><span id="errorMessage"></span></h4><img id="bookmark" src="assets/img/bookmark.png" alt="bookmark"/>
-</div>-->
-
-
             </div>
         </div>
-
-        <section id="updateLocation" class="col-11">
-        </section>
-
-        <script src="/assets/bundle.js"></script>
+        <script src="/assets/accountBundle.js"></script>
     </body>
 </html>

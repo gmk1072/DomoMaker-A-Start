@@ -2,7 +2,7 @@ const handleLogin = (e) => {
     e.preventDefault();
     $("#bookmarkMessage").animate({width:'hide'},350);
     if($("#user").val() == '' || $("#pass").val() == '') {
-        handleError("RAWR! username or password is empty");
+        handleError("username or password is empty");
         return false;
     }
 
@@ -18,12 +18,12 @@ const handleSignup = (e) => {
     $("#bookmarkMessage").animate({width:'hide'},350);
 
     if($("#user").val() =='' || $("#pass").val() =='' || $("#pass2").val() == '') {
-        handleError("RAWR! all fields are required");
+        handleError("all fields are required");
         return false
     }
 
     if($("#pass").val() !== $("#pass2").val()) {
-        handleError("RAWR passwords do not match");
+        handleError("passwords do not match");
         return false;
     }
 

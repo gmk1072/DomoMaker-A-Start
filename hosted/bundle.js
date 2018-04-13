@@ -7,7 +7,7 @@ var handleBookmark = function handleBookmark(e) {
 
     $("#bookmarkMessage").animate({ width: 'hide' }, 350);
     if ($("#bookmarkName").val() == '' || $("#bookmarkURL").val() == '') {
-        handleError("RAWR all fields are required");
+        handleError("all fields are required");
         return false;
     }
 
@@ -161,6 +161,10 @@ var UpdateModal = function UpdateModal(props) {
     );
 };
 
+var Ads = function Ads(props) {
+    return React.createElement("img", { className: "m-0 p-0", id: "ad", src: "/assets/img/Ad.gif", alt: "ad" });
+};
+
 var BookmarkList = function BookmarkList(props) {
     if (props.bookmarks.length === 0) {
         return React.createElement(
@@ -235,6 +239,10 @@ var loadBookmarksFromServer = function loadBookmarksFromServer() {
     });
 };
 
+var loadAds = function loadAds() {
+    ReactDOM.render(React.createElement(Ads, null), document.querySelector("#ads"));
+};
+
 var setup = function setup(csrf) {
     globCsrf = csrf;
     ReactDOM.render(React.createElement(BookmarkForm, { csrf: globCsrf }), document.querySelector("#makeBookmark"));
@@ -243,6 +251,7 @@ var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(UpdateModal, { bookmarks: [] }), document.querySelector("#updateLocation"));
 
     loadBookmarksFromServer();
+    loadAds();
 };
 
 var getToken = function getToken() {
@@ -258,7 +267,8 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
     $("#errorMessage").text(message);
-    $("#bookmarkMessage").animate({ width: 'toggle' }, 350);
+    //$("#bookmarkMessage").animate({width:'toggle'},350);
+    $('#bookmarkMessage').modal("show");
 };
 
 var redirect = function redirect(response) {

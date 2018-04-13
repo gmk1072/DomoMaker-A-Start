@@ -32,14 +32,15 @@
                             <div class="row">
                                 <a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
 
-                                <a id="loginButton" href="/login"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Login</div></a>
-                                <a id="signupButton" href="/signup"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Sign up</div></a>
+                                <a id="backToAppButton" href="/maker"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back to app</div></a>
+                                <a id="backToAccountButton" href="/account"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back to account</div></a>
                             </div>
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -48,8 +49,8 @@
                             <div class="row">
                                 <a href="/login"><img src="/assets/img/face.png" alt="face logo"/></a>
 
-                                <a href="/login"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Login</div></a>
-                                <a href="/signup"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Sign up</div></a>
+                                <a href="/maker"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back to app</div></a>
+                                <a href="/account"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Back to account</div></a>
                             </div>
                         </div>
                     </nav>
@@ -57,30 +58,33 @@
             </div>
         </div>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-4"></div>
-                <section class="col-4" id="content" >
-                </section>
-                <div class="col-4"></div>
+        <div id="pricingContent">
 
-                <div class="modal fade" id="bookmarkMessage" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4><span id="errorMessage" class="modal-title"></span></h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div id="bookmarkMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-<h4><span id="errorMessage">Wrong username or password</span></h4><img id="bookmark" src="assets/img/bookmark.png" alt="bookmark"/>
-</div>-->
-            </div>
         </div>
-        <script src="/assets/loginBundle.js"></script>
+        <!--<div class="container-fluid">
+<div class="row">
+<div class="col-3 bg-danger" id="accountSideBar">
+
+</div>
+<section class="col-9" id="accountContent" >
+</section>
+
+<div class="modal fade" id="bookmarkMessage" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h4><span id="errorMessage" class="modal-title"></span></h4>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>-->
+        <script src="/assets/pricingBundle.js"></script>
     </body>
 </html>
+
+

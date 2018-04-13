@@ -1,6 +1,7 @@
 const handleError = (message) => {
     $("#errorMessage").text(message);
-    $("#bookmarkMessage").animate({width:'toggle'},350);
+    //$("#bookmarkMessage").animate({width:'toggle'},350);
+    $('#bookmarkMessage').modal("show");
 };
 
 const redirect = (response) => {

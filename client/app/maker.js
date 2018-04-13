@@ -6,7 +6,7 @@ const handleBookmark = (e) => {
 
     $("#bookmarkMessage").animate({width:'hide'}, 350);
     if($("#bookmarkName").val() == '' || $("#bookmarkURL").val() == '') {
-        handleError("RAWR all fields are required");
+        handleError("all fields are required");
         return false;
     }
 
@@ -101,6 +101,11 @@ const UpdateModal = (props) => {
     );
 };
 
+const Ads = (props) => {
+    return (
+        <img className="m-0 p-0" id="ad" src="/assets/img/Ad.gif" alt="ad"/>
+    );
+};
 
 const BookmarkList = function(props) {
     if(props.bookmarks.length === 0) {
@@ -143,6 +148,13 @@ const loadBookmarksFromServer = () => {
     });
 };
 
+const loadAds = () => {
+    ReactDOM.render(
+        <Ads />,
+        document.querySelector("#ads")
+    );
+};
+
 const setup = function(csrf) {
     globCsrf= csrf;
     ReactDOM.render(
@@ -157,6 +169,7 @@ const setup = function(csrf) {
     );
 
     loadBookmarksFromServer();
+    loadAds();
 };
 
 

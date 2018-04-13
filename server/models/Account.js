@@ -31,7 +31,7 @@ const AccountSchema = new mongoose.Schema({
 });
 
 AccountSchema.statics.toAPI = doc => ({
-  // _id is built into your mongo document and is guaranteed to be unique
+    // _id is built into your mongo document and is guaranteed to be unique
   username: doc.username,
   _id: doc._id,
 });
@@ -59,10 +59,17 @@ AccountSchema.statics.generateHash = (password, callback) => {
   const salt = crypto.randomBytes(saltLength);
 
   crypto.pbkdf2(password, salt, iterations, keyLength, 'RSA-SHA512', (err, hash) =>
-    callback(salt, hash.toString('hex'))
-  );
+                  callback(salt, hash.toString('hex'))
+                 );
 };
 
+AccountSchema.statics.updatePassword = (username, password, salt) => {
+  const search = {
+    username,
+  };
+
+  return AccountModel.findOneAndUpdate(search, { pass: password, salt });
+};
 AccountSchema.statics.authenticate = (username, password, callback) =>
 AccountModel.findByUsername(username, (err, doc) => {
   if (err) {

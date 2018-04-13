@@ -4,7 +4,7 @@ const Bookmark = models.Bookmark;
 
 const makeBookmark = (req, res) => {
   if (!req.body.name || !req.body.url) {
-    return res.status(400).json({ error: 'RAWR! Both name and url are required' });
+    return res.status(400).json({ error: 'Both name and url are required' });
   }
 
   const BookmarkData = {
@@ -53,12 +53,40 @@ const getBookmarks = (request, response) => {
     return res.json({ bookmarks: docs });
   });
 };
+const getAccountData = (request, response) => {
+  const req = request;
+  const res = response;
+
+
+  let len;
+  return Bookmark.BookmarkModel.findByOwner(req.session.account._id, (err, docs) => {
+    if (err) {
+      console.log(err);
+
+      return res.status(400).json({ error: 'An error occurred' });
+    }
+    len = Object.keys(docs).length;
+    return res.json({ username: req.session.account.username, numBookmarks: len });
+  });
+
+
+    /*
+    return Bookmark.BookmarkModel.findByOwner(req.session.account._id, (err, docs) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ error: 'an error occurred' });
+        }
+        const len = Object.keys(docs).length;
+        return res.json({username: req.session.account.username, numBookmarks: len});
+    });
+    */
+};
 
 const updateBookmark = (request, response) => {
   const req = request;
   const res = response;
   if (!req.body.name || !req.body.url) {
-    return res.status(400).json({ error: 'RAWR! Both name and url are required' });
+    return res.status(400).json({ error: 'Both name and url are required' });
   }
   const body = {
     name: req.body.name,
@@ -108,3 +136,4 @@ module.exports.make = makeBookmark;
 module.exports.getBookmarks = getBookmarks;
 module.exports.deleteBookmark = deleteBookmark;
 module.exports.updateBookmark = updateBookmark;
+module.exports.getAccountData = getAccountData;

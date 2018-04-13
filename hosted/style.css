@@ -2,7 +2,7 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
-    padding-top: 50px;
+/*    padding-top: 50px;*/
     overflow-x: hidden;
 }
 
@@ -153,6 +153,7 @@ nav:nth-child(1) {
     box-shadow: 0px 0px 1px 1px #55acee;
 }
 
+/*
 #bookmarkMessage {
     display:none;
     top: 250px;
@@ -169,7 +170,7 @@ nav:nth-child(1) {
     position: absolute;
     top: 0px;
     left: 20px;
-}
+}*/
 
 #speech {
     height: 120px;
@@ -177,12 +178,12 @@ nav:nth-child(1) {
     z-index:300;
 }
 
-#errorMessage {
+/*#errorMessage {
     font-size: 1.2em;
     font-weight: bold;
     color: red;
     font-style: italic;
-}
+}*/
 
 /*#bookmark {
     z-index: 225;
