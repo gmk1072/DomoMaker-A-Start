@@ -35,15 +35,15 @@ const LoginWindow = (props) => {
     return (
         <form id="loginForm" name="loginForm" onSubmit={handleLogin} action="/login" method="POST" className="mainForm" >
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="username-addon">Username:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="username-addon">Username:</span>
         </div>
         <input className="form-control" id="user" type="text" name="username" placeholder="password" aria-describedby="username-addon"/>
         </div>
 
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="password-addon">Password:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="password-addon">Password:</span>
         </div>
         <input className="form-control" id="pass" type="password" name="pass" placeholder="password" aria-describedby="password-addon"/>
         </div>
@@ -57,20 +57,20 @@ const SignupWindow = (props) => {
     return (
         <form id="signupForm" name="signupForm" onSubmit={handleSignup} action="/signup" method="POST" className="mainForm">
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="username-addon">Username:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="username-addon">Username:</span>
         </div>
         <input className="form-control" id="user" type="text" name="username" placeholder="password" aria-describedby="username-addon"/>
         </div>
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="password-addon">Password:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="password-addon">Password:</span>
         </div>
         <input className="form-control" id="pass" type="password" name="pass" placeholder="password" aria-describedby="password-addon"/>
         </div>
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="password2-addon">Password:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="password2-addon">Password:</span>
         </div>
         <input className="form-control" id="pass2" type="password" name="pass2" placeholder="password" aria-describedby="password-addon"/>
         </div>

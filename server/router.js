@@ -20,6 +20,7 @@ const router = (app) => {
   app.post('/updatePassword', mid.requiresSecure, mid.requiresLogin,
              controllers.Account.updatePassword);
   app.get('/pricing', mid.requiresSecure, mid.requiresLogin, controllers.Account.pricingPage);
+  app.get('*', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 
 module.exports = router;

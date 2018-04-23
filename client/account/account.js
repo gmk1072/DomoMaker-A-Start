@@ -87,18 +87,18 @@ const PasswordUpdateWindow = (props) => {
         <div className="col-3">
         </div>
 
-        <div className="col-4">
+        <div className="col-6">
         <form id="passUpdateForm" name="signupForm" onSubmit={handlePassUpdate} action="/updatePassword" method="POST" className="mainForm" >
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="newPassword-addon">New Password:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="newPassword-addon">New Password:</span>
         </div>
         <input className="form-control" id="newPass" type="password" name="newPass" placeholder="password" aria-describedby="password-addon"/>
         </div>
 
         <div className="input-group">
-        <div className="input-group-prepend">
-        <span className="input-group-text bg-secondary text-light" id="newPassword2-addon">Confrim Password:</span>
+        <div className="input-group-prepend col-3">
+        <span className="input-group-text bg-secondary text-light w-100" id="newPassword2-addon">Confrim Password:</span>
         </div>
         <input className="form-control" id="newPass2" type="password" name="newPass2" placeholder="password" aria-describedby="password-addon"/>
 
@@ -159,33 +159,31 @@ const setup = function(csrf) {
 const SideBarList = (props) => {
     return(
         <ul className="list-group h-100">
-        <li className="bg-danger"><div className="ml-sm-2 align-middle"></div></li>
-
-        <li className="bg-danger">
+        <li className="bg-primary">
         <a id="pricingButton" href="/pricing">
-        <div className="btn btn-secondary text-light ml-sm-2 align-middle">Upgrade
+        <div className="btn w-100 btn-secondary text-light ml-sm-2 align-middle">Upgrade
         </div>
         </a>
         </li>
 
-        <li className="bg-danger">
+        <li className="bg-primary">
         <div className="ml-sm-2 align-middle">
         </div>
         </li>
 
-        <li className="bg-danger">
-        <button id="updatePasswordButton" onClick={createPasswordWindow} className="btn btn-secondary text-light ml-sm-2 align-middle">Update Password
+        <li className="bg-primary">
+        <button id="updatePasswordButton" onClick={createPasswordWindow} className="btn w-100 btn-secondary text-light ml-sm-2 align-middle">Update Password
         </button>
         </li>
 
-        <li className="bg-danger">
+        <li className="bg-primary">
         <div className="ml-sm-2 align-middle">
         </div>
         </li>
 
-        <li className="bg-danger">
+        <li className="bg-primary">
         <a href="/logout">
-        <button className="btn btn-secondary text-light align-middle ml-sm-2 ">Log out
+        <button className="btn w-100 btn-secondary text-light align-middle ml-sm-2 ">Log out
         </button>
         </a>
         </li>

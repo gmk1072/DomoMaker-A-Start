@@ -118,7 +118,7 @@ var PasswordUpdateWindow = function PasswordUpdateWindow(props) {
         React.createElement("div", { className: "col-3" }),
         React.createElement(
             "div",
-            { className: "col-4" },
+            { className: "col-6" },
             React.createElement(
                 "form",
                 { id: "passUpdateForm", name: "signupForm", onSubmit: handlePassUpdate, action: "/updatePassword", method: "POST", className: "mainForm" },
@@ -127,10 +127,10 @@ var PasswordUpdateWindow = function PasswordUpdateWindow(props) {
                     { className: "input-group" },
                     React.createElement(
                         "div",
-                        { className: "input-group-prepend" },
+                        { className: "input-group-prepend col-3" },
                         React.createElement(
                             "span",
-                            { className: "input-group-text bg-secondary text-light", id: "newPassword-addon" },
+                            { className: "input-group-text bg-secondary text-light w-100", id: "newPassword-addon" },
                             "New Password:"
                         )
                     ),
@@ -141,10 +141,10 @@ var PasswordUpdateWindow = function PasswordUpdateWindow(props) {
                     { className: "input-group" },
                     React.createElement(
                         "div",
-                        { className: "input-group-prepend" },
+                        { className: "input-group-prepend col-3" },
                         React.createElement(
                             "span",
-                            { className: "input-group-text bg-secondary text-light", id: "newPassword2-addon" },
+                            { className: "input-group-text bg-secondary text-light w-100", id: "newPassword2-addon" },
                             "Confrim Password:"
                         )
                     ),
@@ -203,50 +203,45 @@ var SideBarList = function SideBarList(props) {
         { className: "list-group h-100" },
         React.createElement(
             "li",
-            { className: "bg-danger" },
-            React.createElement("div", { className: "ml-sm-2 align-middle" })
-        ),
-        React.createElement(
-            "li",
-            { className: "bg-danger" },
+            { className: "bg-primary" },
             React.createElement(
                 "a",
                 { id: "pricingButton", href: "/pricing" },
                 React.createElement(
                     "div",
-                    { className: "btn btn-secondary text-light ml-sm-2 align-middle" },
+                    { className: "btn w-100 btn-secondary text-light ml-sm-2 align-middle" },
                     "Upgrade"
                 )
             )
         ),
         React.createElement(
             "li",
-            { className: "bg-danger" },
+            { className: "bg-primary" },
             React.createElement("div", { className: "ml-sm-2 align-middle" })
         ),
         React.createElement(
             "li",
-            { className: "bg-danger" },
+            { className: "bg-primary" },
             React.createElement(
                 "button",
-                { id: "updatePasswordButton", onClick: createPasswordWindow, className: "btn btn-secondary text-light ml-sm-2 align-middle" },
+                { id: "updatePasswordButton", onClick: createPasswordWindow, className: "btn w-100 btn-secondary text-light ml-sm-2 align-middle" },
                 "Update Password"
             )
         ),
         React.createElement(
             "li",
-            { className: "bg-danger" },
+            { className: "bg-primary" },
             React.createElement("div", { className: "ml-sm-2 align-middle" })
         ),
         React.createElement(
             "li",
-            { className: "bg-danger" },
+            { className: "bg-primary" },
             React.createElement(
                 "a",
                 { href: "/logout" },
                 React.createElement(
                     "button",
-                    { className: "btn btn-secondary text-light align-middle ml-sm-2 " },
+                    { className: "btn w-100 btn-secondary text-light align-middle ml-sm-2 " },
                     "Log out"
                 )
             )
@@ -272,7 +267,7 @@ var handleError = function handleError(message) {
 };
 
 var redirect = function redirect(response) {
-    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    //$("#bookmarkMessage").animate({width:'hide'},350);
     window.location = response.redirect;
 };
 

@@ -42,10 +42,10 @@ var LoginWindow = function LoginWindow(props) {
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group-prepend col-3" },
                 React.createElement(
                     "span",
-                    { className: "input-group-text bg-secondary text-light", id: "username-addon" },
+                    { className: "input-group-text bg-secondary text-light w-100", id: "username-addon" },
                     "Username:"
                 )
             ),
@@ -56,10 +56,10 @@ var LoginWindow = function LoginWindow(props) {
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group-prepend col-3" },
                 React.createElement(
                     "span",
-                    { className: "input-group-text bg-secondary text-light", id: "password-addon" },
+                    { className: "input-group-text bg-secondary text-light w-100", id: "password-addon" },
                     "Password:"
                 )
             ),
@@ -83,10 +83,10 @@ var SignupWindow = function SignupWindow(props) {
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group-prepend col-3" },
                 React.createElement(
                     "span",
-                    { className: "input-group-text bg-secondary text-light", id: "username-addon" },
+                    { className: "input-group-text bg-secondary text-light w-100", id: "username-addon" },
                     "Username:"
                 )
             ),
@@ -97,10 +97,10 @@ var SignupWindow = function SignupWindow(props) {
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group-prepend col-3" },
                 React.createElement(
                     "span",
-                    { className: "input-group-text bg-secondary text-light", id: "password-addon" },
+                    { className: "input-group-text bg-secondary text-light w-100", id: "password-addon" },
                     "Password:"
                 )
             ),
@@ -111,10 +111,10 @@ var SignupWindow = function SignupWindow(props) {
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group-prepend col-3" },
                 React.createElement(
                     "span",
-                    { className: "input-group-text bg-secondary text-light", id: "password2-addon" },
+                    { className: "input-group-text bg-secondary text-light w-100", id: "password2-addon" },
                     "Password:"
                 )
             ),
@@ -185,7 +185,7 @@ var handleError = function handleError(message) {
 };
 
 var redirect = function redirect(response) {
-    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    //$("#bookmarkMessage").animate({width:'hide'},350);
     window.location = response.redirect;
 };
 

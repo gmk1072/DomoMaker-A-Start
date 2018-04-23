@@ -174,7 +174,7 @@ var PricingWindow = function PricingWindow(props) {
                             React.createElement(
                                 "small",
                                 { className: "text-muted" },
-                                "/ mo"
+                                "/ hr"
                             )
                         ),
                         React.createElement(
@@ -230,7 +230,7 @@ var handleError = function handleError(message) {
 };
 
 var redirect = function redirect(response) {
-    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    //$("#bookmarkMessage").animate({width:'hide'},350);
     window.location = response.redirect;
 };
 

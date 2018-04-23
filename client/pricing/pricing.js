@@ -63,7 +63,7 @@ const PricingWindow = (props) => {
         <h4 className="my-0 font-weight-normal">Godmode</h4>
         </div>
         <div className="card-body">
-        <h1 className="card-title pricing-card-title">$2900 <small className="text-muted">/ mo</small></h1>
+        <h1 className="card-title pricing-card-title">$2900 <small className="text-muted">/ hr</small></h1>
         <ul className="list-unstyled mt-3 mb-4">
         <li className="h5">Pro Perks Included</li>
         <li className="h5">Access to the Make Facebook Button</li>

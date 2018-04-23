@@ -1,6 +1,8 @@
 
 let globCsrf;
 let updateTarget;
+let listMode;
+let darkmode;
 const handleBookmark = (e) => {
     e.preventDefault();
 
@@ -9,10 +11,15 @@ const handleBookmark = (e) => {
         handleError("all fields are required");
         return false;
     }
+    if(!($('#bookmarkURL').val().includes('https://'))){
+        document.getElementById("bookmarkURL").value='https://' + document.getElementById("bookmarkURL").value;
+    }
 
     sendAjax('POST', $("#bookmarkForm").attr("action"), $("#bookmarkForm").serialize(), function() {
         loadBookmarksFromServer();
     });
+    clearBookmarkInputs();
+
     return false;
 };
 const grabTarget = (e) => {
@@ -31,8 +38,10 @@ const BookmarkForm = (props) => {
         name="bookmarkForm"
         action="/maker"
         method="POST"
-        className="bookmarkForm form-inline"
+        className="bookmarkForm form-inline justify-content-between w-100"
         >
+
+        <div className="input-group">
         <div className="input-group">
         <div className="input-group-prepend">
         <span className="input-group-text bg-secondary text-light" id="bookmark-name-addon">Name</span>
@@ -48,16 +57,40 @@ const BookmarkForm = (props) => {
         </div>
         <input type="hidden" name="_csrf" value={props.csrf} />
         <button className="btn btn-success ml-sm-2" type="submit" value="Make Bookmark"><icon className="material-icons">add</icon></button>
+        </div>
+
+        <div className="btn-group mr-3" role="group" aria-label="View Mode" >
+        <button type="button" className="btn btn-secondary" onClick={listListMode}><icon className="material-icons">view_list</icon></button>
+        <button type="button" className="btn btn-secondary" onClick={moduleListMode}><icon className="material-icons">view_module</icon></button>
+        </div>
         </form>
+
     );
+};
+const listListMode = (e) => {
+    listMode = false;
+    loadBookmarksFromServer();
+};
+const moduleListMode = (e) => {
+    listMode = true;
+    loadBookmarksFromServer();
 };
 
 const deleteBookmark = (e) => {
     e.preventDefault();
     //csrf
-    sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function() {
-        loadBookmarksFromServer();
-    });
+    if(e.target.parentElement.id == '')
+    {
+        sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.parentElement.id + "&_csrf=" + globCsrf, function() {
+            loadBookmarksFromServer();
+        });
+    }
+    else{
+        sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function() {
+            loadBookmarksFromServer();
+        });
+
+    }
     return false;
 };
 const updateBookmark = (e) => {
@@ -117,22 +150,48 @@ const BookmarkList = function(props) {
     }
 
     //<img src="/assets/img/bookmarkface.jpeg" atl="bookmark face" className="bookmarkFace" />
-    const bookmarkNodes = props.bookmarks.map(function(bookmark) {
-        return (
-            <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark container-fluid list-group-item list-group-item-action">
-            <div className ="row" id={bookmark._id}>
-            <h3 className="bookmarkName col-10"><img src={'http://www.google.com/s2/favicons?domain='+bookmark.url} /> {bookmark.name} </h3>
-            <button type="button" data-toggle="modal" data-target="#updateModal" data-whatever="@mdo" className="bookmarkUpdate col-1 btn-sm btn-primary text-light" onClick={grabTarget}><icon className="material-icons">edit</icon></button>
+    let bookmarkNodes;
+    if(listMode == false)
+        bookmarkNodes = props.bookmarks.map(function(bookmark) {
+            return (
+                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark container-fluid list-group-item list-group-item-action">
+                <div className ="row" id={bookmark._id}>
+                <h3 className="bookmarkName col-10"><img src={'http://www.google.com/s2/favicons?domain='+bookmark.url} /> {bookmark.name} </h3>
+                <button type="button" data-toggle="modal" data-target="#updateModal" data-whatever="@mdo" className="bookmarkUpdate col-1 btn-sm btn-primary text-dark" onClick={grabTarget}><icon className="material-icons">edit</icon></button>
 
-            <button className="bookmarkDelete col-1 btn-sm btn-danger text-dark" onClick={deleteBookmark} ><icon className="material-icons">delete</icon></button>
-            </div>
-            <div className="row">
-            <div className="col-1"></div>
-            <h3 className="bookmarkURL col-10">{bookmark.url} </h3>
-            </div>
-            </a>
-        );
-    });
+                <button className="bookmarkDelete col-1 btn-sm btn-primary text-dark" onClick={deleteBookmark} ><icon className="material-icons">delete</icon></button>
+                </div>
+                <div className="row">
+                <div className="col-1"></div>
+                <h3 className="bookmarkURL col-10">{bookmark.url} </h3>
+                </div>
+                </a>
+            );
+        });
+    else{
+        bookmarkNodes = props.bookmarks.map(function(bookmark) {
+            return (
+                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action">
+                <div className="card rounded">
+                <div className="card-header ">
+                <h3 className="bookmarkName d-flex justify-content-between">
+                <div className="cardhead">
+                {bookmark.name}</div>
+                <img className="icon" src={'http://www.google.com/s2/favicons?domain='+bookmark.url} />
+                </h3>
+                </div>
+                <div className="card-body" id={bookmark._id}>
+                <h3 className="bookmarkURL">{bookmark.url} </h3>
+                <button type="button" data-toggle="modal" data-target="#updateModal" data-whatever="@mdo" className="bookmarkUpdate btn-sm btn-primary text-dark" onClick={grabTarget}><icon className="material-icons">edit</icon></button>
+
+                <button className="bookmarkDelete btn-sm btn-primary text-dark" onClick={deleteBookmark} ><icon className="material-icons">delete</icon></button>
+                </div>
+                </div>
+                </a>
+            );
+        });
+    }
+
     return(
         <div className="bookmarkList">
         {bookmarkNodes}
@@ -140,6 +199,12 @@ const BookmarkList = function(props) {
     );
 };
 
+const clearBookmarkInputs = () => {
+    document.getElementById("bookmarkName").value='';
+    document.getElementById("bookmarkURL").value='https://';
+    document.getElementById("bookmarkName").focus();
+
+};
 const loadBookmarksFromServer = () => {
     sendAjax('GET', '/getBookmarks', null, (data) => {
         ReactDOM.render(

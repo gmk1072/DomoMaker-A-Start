@@ -8,10 +8,17 @@ html, body {
 
 #logo {
     height: 40px;
-    width: 40;
-    padding-top: 5px;
+    width: auto;
     float:left;
-    border-radius: 8px;
+}
+.icon{
+    height:25px;
+    width:25px;
+    min-height: 25px;
+    min-width: 25px;
+}
+.cardhead{
+    overflow: hidden;
 }
 
 nav {
@@ -19,6 +26,7 @@ nav {
     height: 50px;
     background-color: #55acee;
 }
+
 
 nav:nth-child(1) {
     padding-left: 25px;
@@ -46,6 +54,7 @@ nav:nth-child(1) {
     transition: background-color 0.8s ease;
     background-color: #66bdff;
 }
+
 
 .container-fluid {
     padding: 0;

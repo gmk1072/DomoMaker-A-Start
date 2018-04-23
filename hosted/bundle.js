@@ -2,6 +2,8 @@
 
 var globCsrf = void 0;
 var updateTarget = void 0;
+var listMode = void 0;
+var darkmode = void 0;
 var handleBookmark = function handleBookmark(e) {
     e.preventDefault();
 
@@ -10,10 +12,15 @@ var handleBookmark = function handleBookmark(e) {
         handleError("all fields are required");
         return false;
     }
+    if (!$('#bookmarkURL').val().includes('https://')) {
+        document.getElementById("bookmarkURL").value = 'https://' + document.getElementById("bookmarkURL").value;
+    }
 
     sendAjax('POST', $("#bookmarkForm").attr("action"), $("#bookmarkForm").serialize(), function () {
         loadBookmarksFromServer();
     });
+    clearBookmarkInputs();
+
     return false;
 };
 var grabTarget = function grabTarget(e) {
@@ -33,55 +40,95 @@ var BookmarkForm = function BookmarkForm(props) {
             name: "bookmarkForm",
             action: "/maker",
             method: "POST",
-            className: "bookmarkForm form-inline"
+            className: "bookmarkForm form-inline justify-content-between w-100"
         },
         React.createElement(
             "div",
             { className: "input-group" },
             React.createElement(
                 "div",
-                { className: "input-group-prepend" },
+                { className: "input-group" },
                 React.createElement(
-                    "span",
-                    { className: "input-group-text bg-secondary text-light", id: "bookmark-name-addon" },
-                    "Name"
-                )
+                    "div",
+                    { className: "input-group-prepend" },
+                    React.createElement(
+                        "span",
+                        { className: "input-group-text bg-secondary text-light", id: "bookmark-name-addon" },
+                        "Name"
+                    )
+                ),
+                React.createElement("input", { className: "form-control", id: "bookmarkName", type: "text", name: "name", placeholder: "Bookmark Name", "aria-describedby": "bookmark-name-addon" })
             ),
-            React.createElement("input", { className: "form-control", id: "bookmarkName", type: "text", name: "name", placeholder: "Bookmark Name", "aria-describedby": "bookmark-name-addon" })
+            React.createElement(
+                "div",
+                { className: "input-group ml-sm-2" },
+                React.createElement(
+                    "div",
+                    { className: "input-group-prepend" },
+                    React.createElement(
+                        "span",
+                        { className: "input-group-text bg-secondary text-light", id: "bookmark-url-addon" },
+                        "URL"
+                    )
+                ),
+                React.createElement("input", { className: "form-control", id: "bookmarkURL", type: "text", name: "url", placeholder: "Bookmark URL", "aria-describedby": "bookmark-url-addon" })
+            ),
+            React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+            React.createElement(
+                "button",
+                { className: "btn btn-success ml-sm-2", type: "submit", value: "Make Bookmark" },
+                React.createElement(
+                    "icon",
+                    { className: "material-icons" },
+                    "add"
+                )
+            )
         ),
         React.createElement(
             "div",
-            { className: "input-group ml-sm-2" },
+            { className: "btn-group mr-3", role: "group", "aria-label": "View Mode" },
             React.createElement(
-                "div",
-                { className: "input-group-prepend" },
+                "button",
+                { type: "button", className: "btn btn-secondary", onClick: listListMode },
                 React.createElement(
-                    "span",
-                    { className: "input-group-text bg-secondary text-light", id: "bookmark-url-addon" },
-                    "URL"
+                    "icon",
+                    { className: "material-icons" },
+                    "view_list"
                 )
             ),
-            React.createElement("input", { className: "form-control", id: "bookmarkURL", type: "text", name: "url", placeholder: "Bookmark URL", "aria-describedby": "bookmark-url-addon" })
-        ),
-        React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement(
-            "button",
-            { className: "btn btn-success ml-sm-2", type: "submit", value: "Make Bookmark" },
             React.createElement(
-                "icon",
-                { className: "material-icons" },
-                "add"
+                "button",
+                { type: "button", className: "btn btn-secondary", onClick: moduleListMode },
+                React.createElement(
+                    "icon",
+                    { className: "material-icons" },
+                    "view_module"
+                )
             )
         )
     );
+};
+var listListMode = function listListMode(e) {
+    listMode = false;
+    loadBookmarksFromServer();
+};
+var moduleListMode = function moduleListMode(e) {
+    listMode = true;
+    loadBookmarksFromServer();
 };
 
 var deleteBookmark = function deleteBookmark(e) {
     e.preventDefault();
     //csrf
-    sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function () {
-        loadBookmarksFromServer();
-    });
+    if (e.target.parentElement.id == '') {
+        sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.parentElement.id + "&_csrf=" + globCsrf, function () {
+            loadBookmarksFromServer();
+        });
+    } else {
+        sendAjax('DELETE', '/deleteBookmark', 'id=' + e.target.parentElement.id + "&_csrf=" + globCsrf, function () {
+            loadBookmarksFromServer();
+        });
+    }
     return false;
 };
 var updateBookmark = function updateBookmark(e) {
@@ -179,7 +226,8 @@ var BookmarkList = function BookmarkList(props) {
     }
 
     //<img src="/assets/img/bookmarkface.jpeg" atl="bookmark face" className="bookmarkFace" />
-    var bookmarkNodes = props.bookmarks.map(function (bookmark) {
+    var bookmarkNodes = void 0;
+    if (listMode == false) bookmarkNodes = props.bookmarks.map(function (bookmark) {
         return React.createElement(
             "a",
             { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark container-fluid list-group-item list-group-item-action" },
@@ -196,7 +244,7 @@ var BookmarkList = function BookmarkList(props) {
                 ),
                 React.createElement(
                     "button",
-                    { type: "button", "data-toggle": "modal", "data-target": "#updateModal", "data-whatever": "@mdo", className: "bookmarkUpdate col-1 btn-sm btn-primary text-light", onClick: grabTarget },
+                    { type: "button", "data-toggle": "modal", "data-target": "#updateModal", "data-whatever": "@mdo", className: "bookmarkUpdate col-1 btn-sm btn-primary text-dark", onClick: grabTarget },
                     React.createElement(
                         "icon",
                         { className: "material-icons" },
@@ -205,7 +253,7 @@ var BookmarkList = function BookmarkList(props) {
                 ),
                 React.createElement(
                     "button",
-                    { className: "bookmarkDelete col-1 btn-sm btn-danger text-dark", onClick: deleteBookmark },
+                    { className: "bookmarkDelete col-1 btn-sm btn-primary text-dark", onClick: deleteBookmark },
                     React.createElement(
                         "icon",
                         { className: "material-icons" },
@@ -225,7 +273,61 @@ var BookmarkList = function BookmarkList(props) {
                 )
             )
         );
-    });
+    });else {
+        bookmarkNodes = props.bookmarks.map(function (bookmark) {
+            return React.createElement(
+                "a",
+                { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action" },
+                React.createElement(
+                    "div",
+                    { className: "card rounded" },
+                    React.createElement(
+                        "div",
+                        { className: "card-header " },
+                        React.createElement(
+                            "h3",
+                            { className: "bookmarkName d-flex justify-content-between" },
+                            React.createElement(
+                                "div",
+                                { className: "cardhead" },
+                                bookmark.name
+                            ),
+                            React.createElement("img", { className: "icon", src: 'http://www.google.com/s2/favicons?domain=' + bookmark.url })
+                        )
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "card-body", id: bookmark._id },
+                        React.createElement(
+                            "h3",
+                            { className: "bookmarkURL" },
+                            bookmark.url,
+                            " "
+                        ),
+                        React.createElement(
+                            "button",
+                            { type: "button", "data-toggle": "modal", "data-target": "#updateModal", "data-whatever": "@mdo", className: "bookmarkUpdate btn-sm btn-primary text-dark", onClick: grabTarget },
+                            React.createElement(
+                                "icon",
+                                { className: "material-icons" },
+                                "edit"
+                            )
+                        ),
+                        React.createElement(
+                            "button",
+                            { className: "bookmarkDelete btn-sm btn-primary text-dark", onClick: deleteBookmark },
+                            React.createElement(
+                                "icon",
+                                { className: "material-icons" },
+                                "delete"
+                            )
+                        )
+                    )
+                )
+            );
+        });
+    }
+
     return React.createElement(
         "div",
         { className: "bookmarkList" },
@@ -233,6 +335,11 @@ var BookmarkList = function BookmarkList(props) {
     );
 };
 
+var clearBookmarkInputs = function clearBookmarkInputs() {
+    document.getElementById("bookmarkName").value = '';
+    document.getElementById("bookmarkURL").value = 'https://';
+    document.getElementById("bookmarkName").focus();
+};
 var loadBookmarksFromServer = function loadBookmarksFromServer() {
     sendAjax('GET', '/getBookmarks', null, function (data) {
         ReactDOM.render(React.createElement(BookmarkList, { bookmarks: data.bookmarks }), document.querySelector("#bookmarks"));
@@ -272,7 +379,7 @@ var handleError = function handleError(message) {
 };
 
 var redirect = function redirect(response) {
-    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    //$("#bookmarkMessage").animate({width:'hide'},350);
     window.location = response.redirect;
 };
 

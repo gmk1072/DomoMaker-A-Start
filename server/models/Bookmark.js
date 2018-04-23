@@ -45,14 +45,16 @@ BookmarkSchema.statics.findByOwner = (ownerId, callback) => {
   return BookmarkModel.find(search).select('name url').exec(callback);
 };
 
-BookmarkSchema.statics.deleteBookmark = (ownerId, id, callback) => {
+BookmarkSchema.statics.deleteBookmark = (ownerId, id, callback) =>
+  /*
   const search = {
     owner: convertId(ownerId),
   };
-
-  return BookmarkModel.findOneAndRemove(search, { _id: id }, callback);
+  /*
+  */
+   BookmarkModel.findByIdAndRemove({ _id: id }, callback)
   // return BookmarkModel.findOneAndRemove(search).remove({ _id: id }).exec(callback);
-};
+;
 
 BookmarkSchema.statics.updateBookmark = (ownerId, id, body, callback) => {
   const search = {

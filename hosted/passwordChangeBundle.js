@@ -110,7 +110,7 @@ var handleError = function handleError(message) {
 };
 
 var redirect = function redirect(response) {
-    $("#bookmarkMessage").animate({ width: 'hide' }, 350);
+    //$("#bookmarkMessage").animate({width:'hide'},350);
     window.location = response.redirect;
 };
 
