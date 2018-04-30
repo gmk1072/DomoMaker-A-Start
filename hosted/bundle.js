@@ -57,7 +57,7 @@ var BookmarkForm = function BookmarkForm(props) {
                         "Name"
                     )
                 ),
-                React.createElement("input", { className: "form-control", id: "bookmarkName", type: "text", name: "name", placeholder: "Bookmark Name", "aria-describedby": "bookmark-name-addon" })
+                React.createElement("input", { className: "form-control darkMode", id: "bookmarkName", type: "text", name: "name", placeholder: "Bookmark Name", "aria-describedby": "bookmark-name-addon" })
             ),
             React.createElement(
                 "div",
@@ -71,7 +71,7 @@ var BookmarkForm = function BookmarkForm(props) {
                         "URL"
                     )
                 ),
-                React.createElement("input", { className: "form-control", id: "bookmarkURL", type: "text", name: "url", placeholder: "Bookmark URL", "aria-describedby": "bookmark-url-addon" })
+                React.createElement("input", { className: "form-control darkMode", id: "bookmarkURL", type: "text", name: "url", placeholder: "Bookmark URL", "aria-describedby": "bookmark-url-addon" })
             ),
             React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
             React.createElement(
@@ -151,10 +151,10 @@ var UpdateModal = function UpdateModal(props) {
             { className: "modal-dialog", role: "document" },
             React.createElement(
                 "div",
-                { className: "modal-content" },
+                { className: "modal-content darkMode" },
                 React.createElement(
                     "div",
-                    { className: "modal-header" },
+                    { className: "modal-header darkMode" },
                     React.createElement(
                         "h5",
                         { className: "modal-title", id: "updateModalLabel" },
@@ -219,7 +219,7 @@ var BookmarkList = function BookmarkList(props) {
             { className: "bookmarkList list-group" },
             React.createElement(
                 "a",
-                { href: "#", className: "emptyBookmark list-group-item list-group-item-action" },
+                { href: "#", className: "emptyBookmark list-group-item list-group-item-action darkMode" },
                 "No bookmarks yet"
             )
         );
@@ -230,7 +230,7 @@ var BookmarkList = function BookmarkList(props) {
     if (listMode == false) bookmarkNodes = props.bookmarks.map(function (bookmark) {
         return React.createElement(
             "a",
-            { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark container-fluid list-group-item list-group-item-action" },
+            { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark container-fluid list-group-item list-group-item-action darkMode" },
             React.createElement(
                 "div",
                 { className: "row", id: bookmark._id },
@@ -277,10 +277,10 @@ var BookmarkList = function BookmarkList(props) {
         bookmarkNodes = props.bookmarks.map(function (bookmark) {
             return React.createElement(
                 "a",
-                { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action" },
+                { href: bookmark.url, target: "_blank", key: bookmark._id, className: "bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action darkMode" },
                 React.createElement(
                     "div",
-                    { className: "card rounded" },
+                    { className: "card rounded darkMode" },
                     React.createElement(
                         "div",
                         { className: "card-header " },
@@ -337,7 +337,7 @@ var BookmarkList = function BookmarkList(props) {
 
 var clearBookmarkInputs = function clearBookmarkInputs() {
     document.getElementById("bookmarkName").value = '';
-    document.getElementById("bookmarkURL").value = 'https://';
+    document.getElementById("bookmarkURL").value = '';
     document.getElementById("bookmarkName").focus();
 };
 var loadBookmarksFromServer = function loadBookmarksFromServer() {
@@ -358,7 +358,27 @@ var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(UpdateModal, { bookmarks: [] }), document.querySelector("#updateLocation"));
 
     loadBookmarksFromServer();
-    loadAds();
+
+    sendAjax('GET', '/getDarkMode', null, function (data) {
+        if (data.darkMode) {
+            var sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #343a40!important; color: #fff!important;}";
+        } else {
+            var _sheet = document.getElementById("style");
+
+            _sheet.innerHTML = ".darkMode {background-color: #fff!important; color: #343a40!important;}";
+        }
+    });
+
+    var darkmodebutton = document.querySelector("#darkModeButton");
+    darkmodebutton.addEventListener("click", function (e) {
+        e.preventDefault();
+        sendAjax('POST', '/toggleDarkMode', "_csrf=" + globCsrf, function (data) {
+            window.location.reload();
+        });
+        return false;
+    });
 };
 
 var getToken = function getToken() {

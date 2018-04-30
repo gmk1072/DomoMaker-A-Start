@@ -2,6 +2,7 @@ const controllers = require('./controllers');
 const mid = require('./middleware');
 const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
+  app.get('/getDarkMode', mid.requiresSecure, mid.requiresLogin, controllers.Account.getDarkMode);
   app.get('/getBookmarks', mid.requiresLogin, controllers.Bookmark.getBookmarks);
   app.get('/getAccountData', mid.requiresLogin, controllers.Bookmark.getAccountData);
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
@@ -20,6 +21,8 @@ const router = (app) => {
   app.post('/updatePassword', mid.requiresSecure, mid.requiresLogin,
              controllers.Account.updatePassword);
   app.get('/pricing', mid.requiresSecure, mid.requiresLogin, controllers.Account.pricingPage);
+  app.post('/toggleDarkMode', mid.requiresSecure, mid.requiresLogin,
+controllers.Account.toggleDarkMode);
   app.get('*', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

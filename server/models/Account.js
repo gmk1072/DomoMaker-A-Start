@@ -28,6 +28,10 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  darkMode: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 AccountSchema.statics.toAPI = doc => ({

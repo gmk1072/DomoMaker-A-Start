@@ -49,6 +49,36 @@ const login = (request, response) => {
   });
 };
 
+const toggleDarkMode = (request, response) => {
+  const req = request;
+  const res = response;
+  req.body._id = `${req.session.account._id}`;
+  req.body.darkMode = `${req.body.darkMode}`;
+  Account.AccountModel.findById(req.body._id, (err, account) => {
+    if (err) {
+      console.log(err);
+      const e = { error: 'An error occurred' };
+      return (res.status(400).json(e));
+    }
+    const acc = account;
+    if (acc.darkMode) {
+      acc.darkMode = false;
+    } else {
+      acc.darkMode = true;
+    }
+    acc.save((errr) => {
+      if (errr) {
+        console.log(errr);
+
+        const e = { error: 'An error occurred' };
+        return (res.status(400).json(e));
+      }
+      return res.json({ redirect: '/maker' });
+    });
+    return false;
+  });
+};
+
 const updatePassword = (request, response) => {
   const req = request;
   const res = response;
@@ -64,6 +94,7 @@ const updatePassword = (request, response) => {
   }
 
   return Account.AccountModel.generateHash(req.body.pass, (salt, hash) =>
+
 Account.AccountModel.findById(req.body._id, (err, account) => {
   if (err) {
     console.log(err);
@@ -137,6 +168,19 @@ const getToken = (request, response) => {
   res.json(csrfJSON);
 };
 
+const getDarkMode = (request, response) => {
+  const req = request;
+  const res = response;
+
+  return Account.AccountModel.findById(req.session.account._id, (err, account) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'an error occurred' });
+    }
+    return res.json({ darkMode: account.darkMode });
+  });
+};
+
 module.exports.loginPage = loginPage;
 module.exports.accountPage = accountPage;
 module.exports.pricingPage = pricingPage;
@@ -147,3 +191,5 @@ module.exports.logout = logout;
 // module.exports.signupPage = signupPage;
 module.exports.signup = signup;
 module.exports.getToken = getToken;
+module.exports.getDarkMode = getDarkMode;
+module.exports.toggleDarkMode = toggleDarkMode;

@@ -26,7 +26,7 @@ const AccountWindow = (props) => {
         <div className="h-100">
         <div className="container">
         <div className="card-deck mb-3 text-center">
-        <div className="card mb-4 box-shadow">
+        <div className="card mb-4 box-shadow darkMode">
         <div className="card-header">
         <h4 className="my-0 font-weight-normal">Username</h4>
         </div>
@@ -35,7 +35,7 @@ const AccountWindow = (props) => {
         </div>
         </div>
 
-        <div className="card mb-4 box-shadow">
+        <div className="card mb-4 box-shadow darkMode">
         <div className="card-header">
         <h4 className="my-0 font-weight-normal">Number of Bookmarks</h4>
         </div>
@@ -93,14 +93,15 @@ const PasswordUpdateWindow = (props) => {
         <div className="input-group-prepend col-3">
         <span className="input-group-text bg-secondary text-light w-100" id="newPassword-addon">New Password:</span>
         </div>
-        <input className="form-control" id="newPass" type="password" name="newPass" placeholder="password" aria-describedby="password-addon"/>
+        <input className="form-control darkMode" id="newPass" type="password" name="newPass" placeholder="password" aria-describedby="password-addon"/>
+
         </div>
 
         <div className="input-group">
         <div className="input-group-prepend col-3">
         <span className="input-group-text bg-secondary text-light w-100" id="newPassword2-addon">Confrim Password:</span>
         </div>
-        <input className="form-control" id="newPass2" type="password" name="newPass2" placeholder="password" aria-describedby="password-addon"/>
+        <input className="form-control darkMode" id="newPass2" type="password" name="newPass2" placeholder="password" aria-describedby="password-addon"/>
 
         </div>
 
@@ -139,6 +140,18 @@ const setup = function(csrf) {
         document.querySelector("#accountSideBar")
     );
     createAccountWindow();
+
+    sendAjax('GET', '/getDarkMode', null, (data) => {
+        if(data.darkMode){
+            const sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #343a40!important; color: #fff!important;}";
+        } else{
+            const sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #fff!important; color: #343a40!important;}";
+        }
+    });
     /*
     const passwordButton = document.querySelector("#updatePasswordButton");
     passwordButton.addEventListener("click", (e) => {

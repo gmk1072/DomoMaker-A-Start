@@ -46,14 +46,14 @@ const BookmarkForm = (props) => {
         <div className="input-group-prepend">
         <span className="input-group-text bg-secondary text-light" id="bookmark-name-addon">Name</span>
         </div>
-        <input className="form-control" id="bookmarkName" type="text" name="name" placeholder="Bookmark Name" aria-describedby="bookmark-name-addon"/>
+        <input className="form-control darkMode" id="bookmarkName" type="text" name="name" placeholder="Bookmark Name" aria-describedby="bookmark-name-addon"/>
         </div>
 
         <div className="input-group ml-sm-2">
         <div className="input-group-prepend">
         <span className="input-group-text bg-secondary text-light" id="bookmark-url-addon">URL</span>
         </div>
-        <input className="form-control" id="bookmarkURL" type="text" name="url" placeholder="Bookmark URL" aria-describedby="bookmark-url-addon"/>
+        <input className="form-control darkMode" id="bookmarkURL" type="text" name="url" placeholder="Bookmark URL" aria-describedby="bookmark-url-addon"/>
         </div>
         <input type="hidden" name="_csrf" value={props.csrf} />
         <button className="btn btn-success ml-sm-2" type="submit" value="Make Bookmark"><icon className="material-icons">add</icon></button>
@@ -108,8 +108,8 @@ const UpdateModal = (props) => {
     return (
         <div className="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
-        <div className="modal-content">
-        <div className="modal-header">
+        <div className="modal-content darkMode">
+        <div className="modal-header darkMode">
         <h5 className="modal-title" id="updateModalLabel">Update Bookmark</h5>
         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -144,7 +144,7 @@ const BookmarkList = function(props) {
     if(props.bookmarks.length === 0) {
         return (
             <div className="bookmarkList list-group">
-            <a href="#" className="emptyBookmark list-group-item list-group-item-action">No bookmarks yet</a>
+            <a href="#" className="emptyBookmark list-group-item list-group-item-action darkMode">No bookmarks yet</a>
             </div>
         );
     }
@@ -154,7 +154,7 @@ const BookmarkList = function(props) {
     if(listMode == false)
         bookmarkNodes = props.bookmarks.map(function(bookmark) {
             return (
-                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark container-fluid list-group-item list-group-item-action">
+                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark container-fluid list-group-item list-group-item-action darkMode">
                 <div className ="row" id={bookmark._id}>
                 <h3 className="bookmarkName col-10"><img src={'http://www.google.com/s2/favicons?domain='+bookmark.url} /> {bookmark.name} </h3>
                 <button type="button" data-toggle="modal" data-target="#updateModal" data-whatever="@mdo" className="bookmarkUpdate col-1 btn-sm btn-primary text-dark" onClick={grabTarget}><icon className="material-icons">edit</icon></button>
@@ -171,8 +171,8 @@ const BookmarkList = function(props) {
     else{
         bookmarkNodes = props.bookmarks.map(function(bookmark) {
             return (
-                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action">
-                <div className="card rounded">
+                <a href={bookmark.url} target="_blank" key={bookmark._id} className="bookmark rounded col-2 m-4 float-left list-group-item list-group-item-action darkMode">
+                <div className="card rounded darkMode">
                 <div className="card-header ">
                 <h3 className="bookmarkName d-flex justify-content-between">
                 <div className="cardhead">
@@ -201,7 +201,7 @@ const BookmarkList = function(props) {
 
 const clearBookmarkInputs = () => {
     document.getElementById("bookmarkName").value='';
-    document.getElementById("bookmarkURL").value='https://';
+    document.getElementById("bookmarkURL").value='';
     document.getElementById("bookmarkName").focus();
 
 };
@@ -234,7 +234,27 @@ const setup = function(csrf) {
     );
 
     loadBookmarksFromServer();
-    loadAds();
+
+    sendAjax('GET', '/getDarkMode', null, (data) => {
+        if(data.darkMode){
+            const sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #343a40!important; color: #fff!important;}";
+        } else{
+            const sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #fff!important; color: #343a40!important;}";
+        }
+    });
+
+    const darkmodebutton = document.querySelector("#darkModeButton");
+    darkmodebutton.addEventListener("click", (e) => {
+        e.preventDefault();
+        sendAjax('POST', '/toggleDarkMode', "_csrf=" + globCsrf, (data) => {
+            window.location.reload();
+        });
+        return false;
+    });
 };
 
 

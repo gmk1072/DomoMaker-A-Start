@@ -22,7 +22,8 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
     </head>
-    <body>
+    <style id="style"></style>
+    <body class="darkMode">
         <div class="container-fluid fixed-top ">
             <div class="row">
                 <div class="col-12">
@@ -33,6 +34,9 @@
                                     <a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
                                 </div>
                                 <div>
+                                    <button id="darkModeButton" type="button" class="btn darkMode">
+                                    <icon class="material-icons">brightness_3</icon>
+                                    </button>
                                     <a id="upgradeButton" href="/pricing"><div class="btn btn-secondary text-light ml-sm-2 align-middle">Upgrade</div></a>
                                     <a href="/logout"><div class="btn btn-secondary text-light align-middle ml-sm-2 ">Log out</div></a>
                                     <a href="/account"><div class="btn btn-secondary text-light align-middle ml-sm-2 ">Account</div></a>
@@ -80,8 +84,8 @@
 
                 <div class="modal fade" id="bookmarkMessage" tabindex="-1" role="dialog" aria-labelledby="updateModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                        <div class="modal-content darkMode">
+                            <div class="modal-header darkMode">
                                 <h4><span id="errorMessage" class="modal-title"></span></h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

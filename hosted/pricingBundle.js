@@ -1,10 +1,21 @@
-"use strict";
+'use strict';
 
 var globCsrf = void 0;
 
 var setup = function setup(csrf) {
     globCsrf = csrf;
     ReactDOM.render(React.createElement(PricingWindow, { csrf: globCsrf }), document.querySelector("#pricingContent"));
+    sendAjax('GET', '/getDarkMode', null, function (data) {
+        if (data.darkMode) {
+            var sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #343a40!important; color: #fff!important;}";
+        } else {
+            var _sheet = document.getElementById("style");
+
+            _sheet.innerHTML = ".darkMode {background-color: #fff!important; color: #343a40!important;}";
+        }
+    });
     /*
       ReactDOM.render(
         <BookmarkList bookmarks={[]} />, document.querySelector("#bookmarks")
@@ -17,194 +28,194 @@ var setup = function setup(csrf) {
 
 var PricingWindow = function PricingWindow(props) {
     return React.createElement(
-        "div",
+        'div',
         null,
         React.createElement(
-            "div",
-            { className: "pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" },
+            'div',
+            { className: 'pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center' },
             React.createElement(
-                "h1",
-                { className: "h1" },
-                "Pricing"
+                'h1',
+                { className: 'h1' },
+                'Pricing'
             )
         ),
         React.createElement(
-            "div",
-            { className: "container" },
+            'div',
+            { className: 'container' },
             React.createElement(
-                "div",
-                { className: "card-deck mb-3 text-center" },
+                'div',
+                { className: 'card-deck mb-3 text-center' },
                 React.createElement(
-                    "div",
-                    { className: "card mb-4 box-shadow" },
+                    'div',
+                    { className: 'card mb-4 box-shadow darkMode' },
                     React.createElement(
-                        "div",
-                        { className: "card-header" },
+                        'div',
+                        { className: 'card-header' },
                         React.createElement(
-                            "h4",
-                            { className: "my-0 font-weight-normal" },
-                            "Free"
+                            'h4',
+                            { className: 'my-0 font-weight-normal' },
+                            'Free'
                         )
                     ),
                     React.createElement(
-                        "div",
-                        { className: "card-body" },
+                        'div',
+                        { className: 'card-body' },
                         React.createElement(
-                            "h1",
-                            { className: "card-title pricing-card-title" },
-                            "$0 ",
+                            'h1',
+                            { className: 'card-title pricing-card-title' },
+                            '$0 ',
                             React.createElement(
-                                "small",
-                                { className: "text-muted" },
-                                "/ mo"
+                                'small',
+                                { className: 'text-muted' },
+                                '/ mo'
                             )
                         ),
                         React.createElement(
-                            "ul",
-                            { className: "list-unstyled mt-3 mb-4" },
+                            'ul',
+                            { className: 'list-unstyled mt-3 mb-4' },
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Unlimited* bookmark storage"
+                                'li',
+                                { className: 'h5' },
+                                'Unlimited* bookmark storage'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Ads on page"
+                                'li',
+                                { className: 'h5' },
+                                'Ads on page'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Email support"
+                                'li',
+                                { className: 'h5' },
+                                'Email support'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Help center access"
+                                'li',
+                                { className: 'h5' },
+                                'Help center access'
                             )
                         ),
                         React.createElement(
-                            "button",
-                            { type: "button", className: "btn btn-lg btn-block btn-outline-primary" },
-                            "Sign up for free"
+                            'button',
+                            { type: 'button', className: 'btn btn-lg btn-block btn-outline-primary' },
+                            'Sign up for free'
                         ),
-                        React.createElement("br", null),
+                        React.createElement('br', null),
                         React.createElement(
-                            "p",
-                            { className: "h6" },
-                            "*Not unlimited"
+                            'p',
+                            { className: 'h6' },
+                            '*Not unlimited'
                         )
                     )
                 ),
                 React.createElement(
-                    "div",
-                    { className: "card mb-4 box-shadow" },
+                    'div',
+                    { className: 'card mb-4 box-shadow darkMode' },
                     React.createElement(
-                        "div",
-                        { className: "card-header" },
+                        'div',
+                        { className: 'card-header' },
                         React.createElement(
-                            "h4",
-                            { className: "my-0 font-weight-normal" },
-                            "Pro"
+                            'h4',
+                            { className: 'my-0 font-weight-normal' },
+                            'Pro'
                         )
                     ),
                     React.createElement(
-                        "div",
-                        { className: "card-body" },
+                        'div',
+                        { className: 'card-body' },
                         React.createElement(
-                            "h1",
-                            { className: "card-title pricing-card-title" },
-                            "$5 ",
+                            'h1',
+                            { className: 'card-title pricing-card-title' },
+                            '$5 ',
                             React.createElement(
-                                "small",
-                                { className: "text-muted" },
-                                "/ mo"
+                                'small',
+                                { className: 'text-muted' },
+                                '/ mo'
                             )
                         ),
                         React.createElement(
-                            "ul",
-                            { className: "list-unstyled mt-3 mb-4" },
+                            'ul',
+                            { className: 'list-unstyled mt-3 mb-4' },
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Free perks included"
+                                'li',
+                                { className: 'h5' },
+                                'Free perks included'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "No Ads"
+                                'li',
+                                { className: 'h5' },
+                                'No Ads'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Priority email support"
+                                'li',
+                                { className: 'h5' },
+                                'Priority email support'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Customizability"
+                                'li',
+                                { className: 'h5' },
+                                'Customizability'
                             )
                         ),
                         React.createElement(
-                            "button",
-                            { type: "button", className: "btn btn-lg btn-block btn-success" },
-                            "Get started"
+                            'button',
+                            { type: 'button', className: 'btn btn-lg btn-block btn-success' },
+                            'Get started'
                         )
                     )
                 ),
                 React.createElement(
-                    "div",
-                    { className: "card mb-4 box-shadow" },
+                    'div',
+                    { className: 'card mb-4 box-shadow darkMode' },
                     React.createElement(
-                        "div",
-                        { className: "card-header" },
+                        'div',
+                        { className: 'card-header' },
                         React.createElement(
-                            "h4",
-                            { className: "my-0 font-weight-normal" },
-                            "Godmode"
+                            'h4',
+                            { className: 'my-0 font-weight-normal' },
+                            'Godmode'
                         )
                     ),
                     React.createElement(
-                        "div",
-                        { className: "card-body" },
+                        'div',
+                        { className: 'card-body' },
                         React.createElement(
-                            "h1",
-                            { className: "card-title pricing-card-title" },
-                            "$2900 ",
+                            'h1',
+                            { className: 'card-title pricing-card-title' },
+                            '$2900 ',
                             React.createElement(
-                                "small",
-                                { className: "text-muted" },
-                                "/ hr"
+                                'small',
+                                { className: 'text-muted' },
+                                '/ hr'
                             )
                         ),
                         React.createElement(
-                            "ul",
-                            { className: "list-unstyled mt-3 mb-4" },
+                            'ul',
+                            { className: 'list-unstyled mt-3 mb-4' },
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Pro Perks Included"
+                                'li',
+                                { className: 'h5' },
+                                'Pro Perks Included'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Access to the Make Facebook Button"
+                                'li',
+                                { className: 'h5' },
+                                'Access to the Make Facebook Button'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Quantum Network Access"
+                                'li',
+                                { className: 'h5' },
+                                'Quantum Network Access'
                             ),
                             React.createElement(
-                                "li",
-                                { className: "h5" },
-                                "Can Use Our Help Center Teleporter for In-Person Help"
+                                'li',
+                                { className: 'h5' },
+                                'Can Use Our Help Center Teleporter for In-Person Help'
                             )
                         ),
                         React.createElement(
-                            "button",
-                            { type: "button", className: "btn btn-lg btn-block btn-success" },
-                            "Contact us"
+                            'button',
+                            { type: 'button', className: 'btn btn-lg btn-block btn-success' },
+                            'Contact us'
                         )
                     )
                 )

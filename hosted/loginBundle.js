@@ -7,9 +7,6 @@ var handleLogin = function handleLogin(e) {
         handleError("username or password is empty");
         return false;
     }
-
-    console.log($("input[name=_csrf]").val());
-
     sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect);
     return false;
 };
@@ -158,7 +155,6 @@ var setup = function setup(csrf) {
         createSignupWindow(csrf);
         return false;
     });
-    console.log(csrf);
     loginButton.addEventListener("click", function (e) {
         e.preventDefault();
         createLoginWindow(csrf);

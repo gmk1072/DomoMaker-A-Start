@@ -35,7 +35,7 @@ var AccountWindow = function AccountWindow(props) {
                 { className: "card-deck mb-3 text-center" },
                 React.createElement(
                     "div",
-                    { className: "card mb-4 box-shadow" },
+                    { className: "card mb-4 box-shadow darkMode" },
                     React.createElement(
                         "div",
                         { className: "card-header" },
@@ -57,7 +57,7 @@ var AccountWindow = function AccountWindow(props) {
                 ),
                 React.createElement(
                     "div",
-                    { className: "card mb-4 box-shadow" },
+                    { className: "card mb-4 box-shadow darkMode" },
                     React.createElement(
                         "div",
                         { className: "card-header" },
@@ -134,7 +134,7 @@ var PasswordUpdateWindow = function PasswordUpdateWindow(props) {
                             "New Password:"
                         )
                     ),
-                    React.createElement("input", { className: "form-control", id: "newPass", type: "password", name: "newPass", placeholder: "password", "aria-describedby": "password-addon" })
+                    React.createElement("input", { className: "form-control darkMode", id: "newPass", type: "password", name: "newPass", placeholder: "password", "aria-describedby": "password-addon" })
                 ),
                 React.createElement(
                     "div",
@@ -148,7 +148,7 @@ var PasswordUpdateWindow = function PasswordUpdateWindow(props) {
                             "Confrim Password:"
                         )
                     ),
-                    React.createElement("input", { className: "form-control", id: "newPass2", type: "password", name: "newPass2", placeholder: "password", "aria-describedby": "password-addon" })
+                    React.createElement("input", { className: "form-control darkMode", id: "newPass2", type: "password", name: "newPass2", placeholder: "password", "aria-describedby": "password-addon" })
                 ),
                 React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
                 React.createElement("br", null),
@@ -182,6 +182,18 @@ var setup = function setup(csrf) {
     globCsrf = csrf;
     ReactDOM.render(React.createElement(SideBarList, null), document.querySelector("#accountSideBar"));
     createAccountWindow();
+
+    sendAjax('GET', '/getDarkMode', null, function (data) {
+        if (data.darkMode) {
+            var sheet = document.getElementById("style");
+
+            sheet.innerHTML = ".darkMode {background-color: #343a40!important; color: #fff!important;}";
+        } else {
+            var _sheet = document.getElementById("style");
+
+            _sheet.innerHTML = ".darkMode {background-color: #fff!important; color: #343a40!important;}";
+        }
+    });
     /*
     const passwordButton = document.querySelector("#updatePasswordButton");
     passwordButton.addEventListener("click", (e) => {
